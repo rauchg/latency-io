@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/smoothie.js"></script>
+    <script>
+      window.onload = function () {
+        var chart = new SmoothieChart({ grid: { fillStyle: "#ffffff"}, labels: { fillStyle: "#000" } })
+          , latency = new TimeSeries()
+
+        chart.addTimeSeries(latency, { strokeStyle: 'rgba(69, 183, 244, 1)', fillStyle: 'rgba(255, 255, 255, 1)', lineWidth: 4 });
+        chart.streamTo(document.getElementById("smoothie"), 500);
+
+        var socket = io.connect()
+          , lastDate
+
+        socket.on('connect', function () {
+          document.getElementById('transport').innerHTML = socket.socket.transport.name;
+          socket.on('message', function () {
+            var date = +new Date
+              , ms = date - lastDate
+
+            document.getElementById('l').innerHTML = ms;
+            latency.append(date, ms);
+            write();
+          });
+
+          function write() {
+            setTimeout(function () {
+              lastDate = new Date
+              socket.send('ping');
+            }, 100);
+          }
+
+          write();
+        });
+      }
+    </script>
+    <style>
+      h1 {
+        font: bold 16px Helvetica;
+      }
+
+      em {
+        background: #fbec94;
+        -webkit-border-radius: 4px;
+        font-style: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><em id="transport"></em> latency: <span id="l"></span> ms</h1>
+    <canvas id="smoothie">
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+    "name": "latency-io"
+  , "description": "Latency tester for socket.io transports"
+  , "version": "0.0.1"
+  , "dependencies": {
+      "express": "2.4.7",
+      "socket.io": "0.8.5"
+    }
+}
