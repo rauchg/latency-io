@@ -1,4 +1,3 @@
-
 # Socket.IO example: latency tester
 
 ![](http://f.cl.ly/items/1Z091c3X1M2o3U2d1S33/Image%202011.11.09%206:07:33%20PM.png)
@@ -14,7 +13,7 @@ By default it measures only `xhr-polling`.
 If you want to change the transport/port you can try:
 
 ```
-LATENCY_PORT=4000 LATENCY_TRANSPORT=websocket
+LATENCY_PORT=4000 LATENCY_TRANSPORT=websocket node server
 ```
 
 ## License
