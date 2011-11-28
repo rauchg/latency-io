@@ -17,11 +17,20 @@
 
         socket.on('connect', function () {
           document.getElementById('transport').innerHTML = socket.socket.transport.name;
+          var allMs = 0;
+          var allCount = 0;
+          var highest = 0;
           socket.on('message', function () {
             var date = +new Date
               , ms = date - lastDate
-
-            document.getElementById('l').innerHTML = ms;
+            allMs += ms;
+            allCount++;
+            if (ms > highest) highest = ms;
+            var mean = allMs/allCount;
+            mean = (~~(mean*1000))/1000;
+            document.getElementById('c').innerHTML = allCount;
+            document.getElementById('l').innerHTML = mean;
+            document.getElementById('h').innerHTML = highest;
             latency.append(date, ms);
             write();
           });
@@ -50,7 +59,7 @@
     </style>
   </head>
   <body>
-    <h1><em id="transport"></em> latency: <span id="l"></span> ms</h1>
+    <h1><em id="transport"></em> count: <span id="c"></span>, latency (mean): <span id="l"></span> ms, highest: <span id="h"></span> ms</h1>
     <canvas id="smoothie">
   </body>
 </html>
